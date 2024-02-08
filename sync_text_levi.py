@@ -58,7 +58,7 @@ def display_text_animated(text, text_area, idx=0):
         if re.match('[a-zA-Z0-9]', current_char):
             delay = random.uniform(0.02, 0.08)  # 英数字の表示速度を早くする
         else:
-            delay = random.uniform(0.1, 0.3)  # 非英数字の表示速度を通常にする
+            delay = random.uniform(0.5, 0.15)  # 非英数字の表示速度を通常にする
 
         # 文字と文字の間のスペースをランダムに設定
         space_length = random.uniform(1.1, 3.0)
@@ -77,7 +77,7 @@ def custom_title_bar(root, title_text):
     close_button = tk.Button(title_bar, text="X", command=root.destroy, bg="gray", fg="white", font=("Meiryo", 12))
     close_button.pack(side="right", padx=10)
 
-    title_label = tk.Label(title_bar, text=title_text, bg="gray", fg="white", font=("Meiryo", 16))
+    title_label = tk.Label(title_bar, text=title_text, bg="gray", fg="white", font=("Meiryo", 20))
     title_label.pack(side="left", padx=10)
 
     # タイトルラベルを中央揃えにするためのスペーサー
@@ -102,7 +102,7 @@ def main():
         root.overrideredirect(True)
         root.title(f'{creation_time}')
 
-        custom_title_bar(root, f'{creation_time}')
+        custom_title_bar(root, f'{creation_time}にMaryにより執筆')
 
         # ウィンドウのサイズを取得
         window_width = root.winfo_screenwidth()
@@ -117,7 +117,7 @@ def main():
         text_area_height = window_height - footer_height
 
         # フォント設定
-        font_size = 18
+        font_size = 22
         font_settings = ('Meiryo', font_size)
 
         # テキストエリアの設定
