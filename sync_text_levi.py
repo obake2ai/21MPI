@@ -102,7 +102,7 @@ def main():
         root.overrideredirect(True)
         root.title(f'{creation_time}')
 
-        custom_title_bar(root, f'{creation_time}にMaryにより執筆')
+        custom_title_bar(root, f'{creation_time}')
 
         # ウィンドウのサイズを取得
         window_width = root.winfo_screenwidth()
