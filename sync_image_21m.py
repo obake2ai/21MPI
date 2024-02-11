@@ -27,10 +27,10 @@ def is_gif_file(file_path):
 
 def display_image(file_path):
     if is_gif_file(file_path):
-        # GIFアニメーションの場合は mpv または mplayer を使用
-        subprocess.run(['mpv', '--loop=inf', '--fullscreen', file_path])
+        # GIFアニメーションの場合、mpvで黒背景を設定して再生
+        subprocess.run(['mpv', '--loop=inf', '--fs', '--no-keepaspect-window', '--background=#000000', file_path])
     else:
-        # PNG/JPG の場合は feh を使用
+        # PNG/JPGの場合はfehを使用
         subprocess.run(['feh', '--fullscreen', file_path])
 
 def kill_previous_instances():
