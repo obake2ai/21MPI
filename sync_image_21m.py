@@ -32,19 +32,15 @@ def display_image(file_path):
     else:
         # PNG/JPGの場合はfehを使用
         subprocess.run(['feh', '--fullscreen', file_path])
-
-def kill_previous_instances():
+        
+def kill_previous_mpv_instances():
     try:
-        current_pid = str(os.getpid())
-        pids = subprocess.check_output(["pgrep", "-f", "sync_text_levi.py"]).decode().split()
-
-        for pid in pids:
-            if pid != current_pid:
-                os.kill(int(pid), signal.SIGTERM)
+        subprocess.run(["pkill", "-f", "mpv"])
     except subprocess.CalledProcessError:
         pass
 
 def main():
+    kill_previous_mpv_instances() 
     subprocess.run(['rclone', 'sync', f'googledrive:/HATRA24SS/21M/AX01/{str(pi_idx).zfill(2)}/', f'/home/pi/sync/'])
     newest_file = get_newest_file(f'/home/pi/sync/')
 
