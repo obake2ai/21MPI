@@ -21,25 +21,20 @@ def get_newest_file(path):
     return os.path.join(path, newest_file), os.path.getmtime(os.path.join(path, newest_file))
 
 def display_image(file_path):
-    subprocess.run(['feh', '--fullscreen', file_path])
-
-def kill_previous_feh_instances():
-    try:
-        subprocess.run(["pkill", "-f", "feh"])
-    except subprocess.CalledProcessError:
-        pass
+    subprocess.run(['feh', '--fullscreen', '--reload', '1', file_path])
 
 def main():
     last_update_time = None
+    feh_process = None
     while True:
-        kill_previous_feh_instances()
         subprocess.run(['rclone', 'sync', f'googledrive:/HATRA24SS/21M/AX01/{str(pi_idx).zfill(2)}/', f'/home/pi/sync/'])
         newest_file, file_time = get_newest_file(f'/home/pi/sync/')
 
         if newest_file and (last_update_time is None or file_time > last_update_time):
             last_update_time = file_time
-            display_image(newest_file)
-
+            if feh_process:
+                feh_process.kill()
+            feh_process = subprocess.Popen(['feh', '--fullscreen', newest_file])
         time.sleep(10)
 
 if __name__ == "__main__":
