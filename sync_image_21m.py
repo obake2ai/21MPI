@@ -4,7 +4,7 @@ import sys
 import random
 from datetime import datetime
 
-os.environ['DISPLAY'] = ':0'  # ここで正しいディスプレイ番号を設定
+os.environ['DISPLAY'] = ':0'
 
 if len(sys.argv) > 1:
     try:
@@ -18,12 +18,20 @@ def get_newest_file(path):
     files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
     files.sort(key=lambda x: os.path.getmtime(os.path.join(path, x)), reverse=True)
     for file in files:
-        if file.lower().endswith(('.txt', '.log', '.csv', '.png', '.jpg', '.jpeg', '.gif')):
+        if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
             return os.path.join(path, file)
     return None
 
-def is_image_file(file_path):
-    return file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+def is_gif_file(file_path):
+    return file_path.lower().endswith('.gif')
+
+def display_image(file_path):
+    if is_gif_file(file_path):
+        # GIFアニメーションの場合は mpv または mplayer を使用
+        subprocess.run(['mpv', '--loop=inf', '--fullscreen', file_path])
+    else:
+        # PNG/JPG の場合は feh を使用
+        subprocess.run(['feh', '--fullscreen', file_path])
 
 def kill_previous_instances():
     try:
@@ -41,8 +49,7 @@ def main():
     newest_file = get_newest_file(f'/home/pi/sync/')
 
     if newest_file:
-        if is_image_file(newest_file):
-            subprocess.run(['feh', '--fullscreen', '--auto-zoom', newest_file])
+        display_image(newest_file)
 
     kill_previous_instances()
     sys.exit(0)
