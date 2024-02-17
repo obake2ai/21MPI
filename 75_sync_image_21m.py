@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import time
+import shutil
 
 os.environ['DISPLAY'] = ':0'
 
@@ -20,8 +21,16 @@ def get_newest_file(path):
     newest_file = max(files, key=lambda x: os.path.getmtime(os.path.join(path, x)))
     return os.path.join(path, newest_file), os.path.getmtime(os.path.join(path, newest_file))
 
+def rotate_image(file_path):
+    rotated_file_path = file_path + "_rotated.jpg"
+    subprocess.run(['convert', file_path, '-rotate', '90', rotated_file_path])
+    return rotated_file_path
+
 def display_image(file_path):
-    subprocess.run(['feh', '--fullscreen', '--auto-rotate', '--zoom', 'fill', file_path])
+    rotated_file_path = rotate_image(file_path)
+    subprocess.run(['feh', '--fullscreen', '--zoom', 'fill', rotated_file_path])
+    # Optionally delete the rotated file after display to save space
+    os.remove(rotated_file_path)
 
 def main():
     last_update_time = None
@@ -34,7 +43,7 @@ def main():
             last_update_time = file_time
             if feh_process:
                 feh_process.kill()
-            feh_process = subprocess.Popen(['feh', '--fullscreen', '--auto-rotate', '--zoom', 'fill', newest_file])
+            feh_process = subprocess.Popen(['feh', '--fullscreen', '--zoom', 'fill', rotate_image(newest_file)])
         time.sleep(10)
 
 if __name__ == "__main__":
