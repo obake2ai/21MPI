@@ -22,7 +22,7 @@ def get_newest_file(path):
 
 def display_image(file_path):
     # Using --action1 to rotate the image by 90 degrees using convert when feh opens the image
-    subprocess.run(['feh', '--fullscreen', '--zoom', 'fill', '--action1', 'convert %f -rotate 90 %f', file_path])
+    subprocess.run(['feh', '--fullscreen', '--zoom', 'fill', file_path])
 
 def main():
     last_update_time = None
