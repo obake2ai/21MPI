@@ -35,7 +35,7 @@ def main():
             last_update_time = file_time
             if feh_process:
                 feh_process.kill()
-            feh_process = subprocess.Popen(['feh', '--fullscreen', '--zoom', 'fill', '--action1', 'convert %f -rotate 90 %f', newest_file])
+            feh_process = subprocess.Popen(['feh', '--fullscreen', '--zoom', 'fill', newest_file])
         time.sleep(10)
 
 if __name__ == "__main__":
