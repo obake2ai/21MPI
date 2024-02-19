@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 import time
+import tempfile
 
 os.environ['DISPLAY'] = ':0'
 
@@ -18,7 +19,13 @@ def get_newest_file(path):
     if not files:
         return None, None
     newest_file = max(files, key=lambda x: os.path.getmtime(os.path.join(path, x)))
-    return os.path.join(path, newest_file), os.path.getmtime(os.path.join(path, newest_file))
+    newest_file_path = os.path.join(path, newest_file)
+    rotated_file_path = tempfile.mktemp(suffix='.jpg')
+
+    # 画像を180度回転
+    subprocess.run(['convert', newest_file_path, '-rotate', '180', rotated_file_path])
+
+    return rotated_file_path, os.path.getmtime(newest_file_path)
 
 def display_image(file_path):
     subprocess.run(['feh', '--fullscreen', '--reload', '1', file_path])
@@ -28,13 +35,13 @@ def main():
     feh_process = None
     while True:
         subprocess.run(['rclone', 'sync', f'googledrive:/HATRA24SS/21M/AX01/{str(pi_idx).zfill(2)}/', f'/home/pi/sync/'])
-        newest_file, file_time = get_newest_file(f'/home/pi/sync/')
+        rotated_file, file_time = get_newest_file(f'/home/pi/sync/')
 
-        if newest_file and (last_update_time is None or file_time > last_update_time):
+        if rotated_file and (last_update_time is None or file_time > last_update_time):
             last_update_time = file_time
             if feh_process:
                 feh_process.kill()
-            feh_process = subprocess.Popen(['feh', '--fullscreen', newest_file])
+            feh_process = subprocess.Popen(['feh', '--fullscreen', rotated_file])
         time.sleep(10)
 
 if __name__ == "__main__":
