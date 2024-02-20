@@ -20,10 +20,10 @@ def get_newest_file(path):
         return None, None
     newest_file = max(files, key=lambda x: os.path.getmtime(os.path.join(path, x)))
     newest_file_path = os.path.join(path, newest_file)
-    rotated_file_path = tempfile.mktemp(suffix='.jpg')
+    #rotated_file_path = tempfile.mktemp(suffix='.jpg')
 
     # 画像を180度回転
-    subprocess.run(['convert', newest_file_path, '-rotate', '180', rotated_file_path])
+    # subprocess.run(['convert', newest_file_path, '-rotate', '180', rotated_file_path])
 
     return rotated_file_path, os.path.getmtime(newest_file_path)
 
