@@ -25,7 +25,7 @@ def get_newest_file(path):
     # 画像を180度回転
     # subprocess.run(['convert', newest_file_path, '-rotate', '180', rotated_file_path])
 
-    return rotated_file_path, os.path.getmtime(newest_file_path)
+    return newest_file_path, os.path.getmtime(newest_file_path)
 
 def display_image(file_path):
     subprocess.run(['feh', '--fullscreen', '--reload', '1', file_path])
