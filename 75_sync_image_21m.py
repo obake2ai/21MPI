@@ -14,7 +14,7 @@ else:
     raise ValueError("No pi_idx specified.")
 
 def get_newest_file(path):
-    files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f)) and f.lower().endswith(('.png', '.jpg', '.jpeg')) and not f.endswith('_rotated.jpg')]
     if not files:
         return None, None
     newest_file = max(files, key=lambda x: os.path.getmtime(os.path.join(path, x)))
