@@ -23,7 +23,7 @@ def get_newest_file(path):
 def rotate_and_display_image(file_path):
     rotated_file_path = file_path + "_rotated.jpg"
     # 画像を90度回転
-    subprocess.run(['convert', file_path, '-rotate', '270', rotated_file_path])
+    subprocess.run(['convert', file_path, '-rotate', '90', rotated_file_path])
     # 回転した画像を表示
     subprocess.run(['feh', '--fullscreen', '--zoom', 'fill', rotated_file_path])
 
