@@ -10,8 +10,8 @@ else:
     raise ValueError("No video file specified.")
 
 def play_video_loop(video_file_path):
-    # mpvでループ再生
-    subprocess.run(['mpv', '--loop', '--fullscreen', '--no-border', video_file_path])
+    # omxplayerでループ再生
+    subprocess.run(['omxplayer', '--loop', '--no-osd', '--aspect-mode', 'fill', video_file_path])
 
 def main():
     if not os.path.isfile(video_file):
